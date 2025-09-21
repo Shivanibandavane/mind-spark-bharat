@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Heart, Sparkles } from "lucide-react";
+import supportIcon from "@/assets/support-icon.jpg";
 
 interface Message {
   id: number;
@@ -78,80 +79,93 @@ export function AICompanion() {
   };
 
   return (
-    <Card className="h-[500px] flex flex-col bg-gradient-gentle shadow-soft">
-      <div className="p-4 border-b border-border bg-gradient-calm rounded-t-lg">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center animate-glow-pulse">
-            <Heart className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-card-foreground">Your Wellness Companion</h3>
-            <p className="text-sm text-muted-foreground">Always here to listen and support</p>
+    <Card className="relative h-[500px] flex flex-col bg-gradient-gentle shadow-soft overflow-hidden">
+      {/* Background decoration */}
+      <div 
+        className="absolute bottom-4 right-4 w-20 h-20 opacity-10 rounded-full"
+        style={{
+          backgroundImage: `url(${supportIcon})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
+      
+      <div className="relative z-10">
+        <div className="p-4 border-b border-border bg-gradient-calm rounded-t-lg">
+          <div className="flex items-center gap-3 animate-fade-in-up">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center animate-glow-pulse hover-lift">
+              <Heart className="w-5 h-5 text-primary animate-heartbeat" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-card-foreground">Your Wellness Companion</h3>
+              <p className="text-sm text-muted-foreground">Always here to listen and support</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-            >
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4">
+            {messages.map((message, index) => (
               <div
-                className={`
-                  max-w-[80%] p-3 rounded-2xl transition-all duration-300 hover:scale-[1.02]
-                  ${message.isUser
-                    ? 'bg-primary text-primary-foreground shadow-soft'
-                    : 'bg-secondary shadow-warm'
-                  }
-                `}
+                key={message.id}
+                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-fade-in-up`}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <p className="text-sm leading-relaxed">{message.text}</p>
-                <p className={`text-xs mt-1 opacity-70 ${message.isUser ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
-              </div>
-            </div>
-          ))}
-          
-          {isTyping && (
-            <div className="flex justify-start">
-              <div className="bg-secondary p-3 rounded-2xl shadow-warm animate-pulse">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                <div
+                  className={`
+                    max-w-[80%] p-3 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover-lift
+                    ${message.isUser
+                      ? 'bg-primary text-primary-foreground shadow-soft'
+                      : 'bg-secondary shadow-warm'
+                    }
+                  `}
+                >
+                  <p className="text-sm leading-relaxed">{message.text}</p>
+                  <p className={`text-xs mt-1 opacity-70 ${message.isUser ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-        <div ref={messagesEndRef} />
-      </ScrollArea>
+            ))}
+          
+            {isTyping && (
+              <div className="flex justify-start animate-fade-in-up">
+                <div className="bg-secondary p-3 rounded-2xl shadow-warm animate-pulse hover-lift">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div ref={messagesEndRef} />
+        </ScrollArea>
 
-      <div className="p-4 border-t border-border">
-        <div className="flex gap-2">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Share what's on your mind..."
-            className="flex-1 bg-background/50 border-border focus:border-primary transition-colors"
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={!inputValue.trim() || isTyping}
-            size="icon"
-            className="shrink-0 bg-primary hover:bg-primary/90 shadow-soft transition-all duration-300 hover:scale-105"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
+        <div className="p-4 border-t border-border">
+          <div className="flex gap-2">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Share what's on your mind..."
+              className="flex-1 bg-background/50 border-border focus:border-primary transition-all duration-300 hover-lift"
+            />
+            <Button
+              onClick={handleSendMessage}
+              disabled={!inputValue.trim() || isTyping}
+              size="icon"
+              className="shrink-0 bg-primary hover:bg-primary/90 shadow-soft transition-all duration-300 hover:scale-105 hover-lift"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2 text-center">
+            <Sparkles className="w-3 h-3 inline mr-1 animate-shimmer" />
+            Your conversations are private and secure
+          </p>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          <Sparkles className="w-3 h-3 inline mr-1" />
-          Your conversations are private and secure
-        </p>
       </div>
     </Card>
   );

@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { User, Session } from '@supabase/supabase-js';
+import { Heart } from "lucide-react";
 
 const Auth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -135,22 +136,33 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-gentle flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <Card className="border-none shadow-elegant">
-          <CardHeader className="text-center space-y-2">
+    <div className="min-h-screen bg-gradient-gentle flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-8 left-8 text-6xl opacity-20 animate-float">🌙</div>
+      <div className="absolute top-16 right-16 text-4xl opacity-20 animate-float" style={{ animationDelay: '2s' }}>✨</div>
+      <div className="absolute bottom-16 left-16 text-5xl opacity-20 animate-float" style={{ animationDelay: '4s' }}>🌸</div>
+      <div className="absolute bottom-8 right-8 text-3xl opacity-20 animate-float" style={{ animationDelay: '1s' }}>🦋</div>
+      
+      <div className="w-full max-w-md relative z-10">
+        <Card className="border-none shadow-elegant hover-lift animate-fade-in-up">
+          <CardHeader className="text-center space-y-2 animate-fade-in-up animate-stagger-1">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center animate-glow-pulse">
+                <Heart className="w-8 h-8 text-primary animate-heartbeat" />
+              </div>
+            </div>
             <CardTitle className="text-2xl font-bold bg-gradient-text bg-clip-text text-transparent">
               Welcome to Your Wellness Journey
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="animate-fade-in-up animate-stagger-2">
               Sign in to access your personalized mental wellness companion
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="animate-fade-in-up animate-stagger-3">
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="signin" className="transition-all duration-300 hover-lift">Sign In</TabsTrigger>
+                <TabsTrigger value="signup" className="transition-all duration-300 hover-lift">Sign Up</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
@@ -177,7 +189,7 @@ const Auth = () => {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full hover-lift animate-glow-pulse" disabled={loading}>
                     {loading ? "Signing in..." : "Sign In"}
                   </Button>
                 </form>
@@ -208,18 +220,18 @@ const Auth = () => {
                       minLength={6}
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full hover-lift animate-glow-pulse" disabled={loading}>
                     {loading ? "Creating account..." : "Create Account"}
                   </Button>
                 </form>
               </TabsContent>
             </Tabs>
             
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center animate-fade-in-up animate-stagger-4">
               <Button 
                 variant="ghost" 
                 onClick={() => navigate("/")}
-                className="text-sm text-muted-foreground"
+                className="text-sm text-muted-foreground hover-lift transition-all duration-300"
               >
                 ← Back to Home
               </Button>

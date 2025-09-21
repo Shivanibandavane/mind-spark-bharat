@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import meditationIcon from "@/assets/meditation-icon.jpg";
 
 const moods = [
   { emoji: "😢", label: "Sad", value: 1, color: "hsl(220 15% 65%)" },
@@ -47,43 +48,55 @@ export function MoodTracker() {
   }
 
   return (
-    <Card className="p-8 bg-gradient-gentle shadow-soft">
-      <div className="text-center mb-6">
-        <h3 className="text-2xl font-semibold mb-2 text-card-foreground">
-          How are you feeling right now?
-        </h3>
-        <p className="text-muted-foreground">
-          Your feelings matter, and sharing them is the first step to healing.
-        </p>
-      </div>
+    <Card className="relative p-8 bg-gradient-gentle shadow-soft overflow-hidden">
+      {/* Background decoration */}
+      <div 
+        className="absolute top-4 right-4 w-24 h-24 opacity-10 rounded-full"
+        style={{
+          backgroundImage: `url(${meditationIcon})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
       
-      <div className="grid grid-cols-5 gap-4">
-        {moods.map((mood) => (
-          <button
-            key={mood.value}
-            onClick={() => handleMoodSelect(mood.value)}
-            className={`
-              p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-110 
-              ${selectedMood === mood.value 
-                ? 'border-primary shadow-glow bg-primary/10' 
-                : 'border-border hover:border-primary/50 bg-card hover:shadow-soft'
-              }
-            `}
-            style={{
-              boxShadow: selectedMood === mood.value 
-                ? `0 8px 32px ${mood.color}40` 
-                : undefined
-            }}
-          >
-            <div className="text-4xl mb-2 animate-float" 
-                 style={{ animationDelay: `${mood.value * 0.2}s` }}>
-              {mood.emoji}
-            </div>
-            <div className="text-sm font-medium text-foreground">
-              {mood.label}
-            </div>
-          </button>
-        ))}
+      <div className="relative z-10">
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-semibold mb-2 text-card-foreground animate-fade-in-up">
+            How are you feeling right now?
+          </h3>
+          <p className="text-muted-foreground animate-fade-in-up animate-stagger-1">
+            Your feelings matter, and sharing them is the first step to healing.
+          </p>
+        </div>
+      
+        <div className="grid grid-cols-5 gap-4 animate-fade-in-up animate-stagger-2">
+          {moods.map((mood) => (
+            <button
+              key={mood.value}
+              onClick={() => handleMoodSelect(mood.value)}
+              className={`
+                p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-110 hover-lift
+                ${selectedMood === mood.value 
+                  ? 'border-primary shadow-glow bg-primary/10' 
+                  : 'border-border hover:border-primary/50 bg-card hover:shadow-soft'
+                }
+              `}
+              style={{
+                boxShadow: selectedMood === mood.value 
+                  ? `0 8px 32px ${mood.color}40` 
+                  : undefined
+              }}
+            >
+              <div className="text-4xl mb-2 animate-float" 
+                   style={{ animationDelay: `${mood.value * 0.2}s` }}>
+                {mood.emoji}
+              </div>
+              <div className="text-sm font-medium text-foreground">
+                {mood.label}
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </Card>
   );
